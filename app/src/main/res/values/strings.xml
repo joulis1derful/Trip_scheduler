@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TripScheduler</string>
+    <string name="list_is_empty">Список маршрутов пуст</string>
+</resources>
