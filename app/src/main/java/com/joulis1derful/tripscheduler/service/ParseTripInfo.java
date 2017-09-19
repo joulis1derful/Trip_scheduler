@@ -3,6 +3,8 @@ package com.joulis1derful.tripscheduler.service;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.joulis1derful.tripscheduler.model.TripInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,20 +21,23 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class ParseTripInfo extends AsyncTask<Void, Void, String> {
     public static final String URL_TO_PARSE =
             "http://projects.gmoby.org/web/index.php/api/trips?from_date=2016-01-01&to_date=2018-03-01";
     public static final String HTTP_METHOD = "GET";
+
     private HttpURLConnection urlConnection = null;
     private BufferedReader reader = null;
     private String resultJson = "";
 
-    private List<String> tripsList;
+    private List<TripInfo> tripsList;
 
     public ParseResponse delegate = null;
 
     public interface ParseResponse {
-        void processFinish(List<String> results);
+        void processFinish(List<TripInfo> results);
     }
 
     public ParseTripInfo(ParseResponse delegate) {
@@ -90,9 +95,32 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
 
             for(int i = 0; i < trips.length(); i++) {
                 JSONObject trip = trips.getJSONObject(i);
-                tripsList.add(trip.getString("from_city"));
+                JSONObject from_city = trip.getJSONObject("from_city");
+                JSONObject to_city = trip.getJSONObject("to_city");
+                int tripId = trip.getInt("id");
+                int city1Highlight = from_city.getInt("highlight");
+                int city1Id = from_city.getInt("id");
+                String city1Name = from_city.getString("name");
+                int city2Highlight = to_city.getInt("highlight");
+                int city2Id = to_city.getInt("id");
+                String city2Name = to_city.getString("name");
+                String from_date = trip.getString("from_date");
+                String to_date = trip.getString("to_date");
+                String from_time = trip.getString("from_time");
+                String to_time = trip.getString("to_time");
+                String from_info = trip.getString("from_info");
+                String to_info  = trip.getString("to_info");
+                String info = trip.getString("info");
+                int price = trip.getInt("price");
+                int bus_id = trip.getInt("bus_id");
+                int reservation_count = trip.getInt("reservation_count");
 
-           //     Log.d("JSON", trip.getString("from_city"));
+                TripInfo.City objCity1 = new TripInfo.City(city1Id, city1Highlight, city1Name);
+                TripInfo.City objCity2 = new TripInfo.City(city2Id, city2Highlight, city2Name);
+                TripInfo objTrip = new TripInfo(tripId, objCity1, objCity2, from_date, to_date, from_time,
+                        to_time, from_info, to_info, info, price, bus_id, reservation_count);
+                tripsList.add(objTrip);
+             //   Log.d("JSON", trip.getString("id"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
