@@ -1,9 +1,12 @@
 package com.joulis1derful.tripscheduler.service;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.joulis1derful.tripscheduler.model.TripInfo;
+import com.joulis1derful.tripscheduler.util.DbHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,9 +21,24 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_BUS_ID;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY1_HIGHLIGHT;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY1_ID;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY1_NAME;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY2_HIGHLIGHT;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY2_ID;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY2_NAME;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_DATE_FROM;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_DATE_TO;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_ID;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_INFO;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_INFO_FROM;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_INFO_TO;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_PRICE;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_RESERVATION_COUNT;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_TIME_FROM;
+import static com.joulis1derful.tripscheduler.util.DbContract.KEY_TIME_TO;
 
 
 public class ParseTripInfo extends AsyncTask<Void, Void, String> {
@@ -28,30 +46,38 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
             "http://projects.gmoby.org/web/index.php/api/trips?from_date=2016-01-01&to_date=2018-03-01";
     public static final String HTTP_METHOD = "GET";
 
-    private HttpURLConnection urlConnection = null;
+    private static final String TAG = ParseTripInfo.class.getSimpleName();
+
     private BufferedReader reader = null;
     private String resultJson = "";
 
-    private List<TripInfo> tripsList;
+    private ProgressDialog dialog;
 
-    public ParseResponse delegate = null;
+    private ParseResponse delegate;
+    private DbHelper mDb;
 
     public interface ParseResponse {
-        void processFinish(List<TripInfo> results);
+        void processFinish(boolean response);
     }
 
-    public ParseTripInfo(ParseResponse delegate) {
+    public ParseTripInfo(Activity activity, ParseResponse delegate) {
+        dialog = new ProgressDialog(activity);
         this.delegate = delegate;
+        this.mDb = DbHelper.getDbInstance(activity);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Log.d("START PARSING", "JSON DATA IS DOWNLOADING");
+        dialog.setMessage("Please wait...\nDownloading resources");
+        dialog.setIndeterminate(true);
+        dialog.show();
+        Log.d(TAG, "JSON DATA IS DOWNLOADING");
     }
 
     @Override
     protected String doInBackground(Void... params) {
+        HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(URL_TO_PARSE);
 
@@ -61,21 +87,15 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
 
             InputStream is = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
-
             reader = new BufferedReader(new InputStreamReader(is));
-
             String line;
             while((line = reader.readLine()) != null) {
                 buffer.append(line);
             }
 
             resultJson = buffer.toString();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Some input/output error has occured");
         } finally {
             closeStream(reader);
         }
@@ -85,9 +105,7 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String strJson) {
         super.onPostExecute(strJson);
-        Log.d("JSON STRING", strJson);
-
-        tripsList = new ArrayList<>();
+        boolean response = false;
         JSONObject dataJson = null;
         try {
             dataJson = new JSONObject(strJson);
@@ -95,6 +113,8 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
 
             for(int i = 0; i < trips.length(); i++) {
                 JSONObject trip = trips.getJSONObject(i);
+                if(trip != null)
+                    response = true;
                 JSONObject from_city = trip.getJSONObject("from_city");
                 JSONObject to_city = trip.getJSONObject("to_city");
                 int tripId = trip.getInt("id");
@@ -115,17 +135,32 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
                 int bus_id = trip.getInt("bus_id");
                 int reservation_count = trip.getInt("reservation_count");
 
-                TripInfo.City objCity1 = new TripInfo.City(city1Id, city1Highlight, city1Name);
-                TripInfo.City objCity2 = new TripInfo.City(city2Id, city2Highlight, city2Name);
-                TripInfo objTrip = new TripInfo(tripId, objCity1, objCity2, from_date, to_date, from_time,
-                        to_time, from_info, to_info, info, price, bus_id, reservation_count);
-                tripsList.add(objTrip);
-             //   Log.d("JSON", trip.getString("id"));
+                ContentValues cv = new ContentValues();
+                cv.put(KEY_ID, tripId);
+                cv.put(KEY_CITY1_ID, city1Id);
+                cv.put(KEY_CITY1_HIGHLIGHT, city1Highlight);
+                cv.put(KEY_CITY1_NAME, city1Name);
+                cv.put(KEY_CITY2_ID, city2Id);
+                cv.put(KEY_CITY2_HIGHLIGHT, city2Highlight);
+                cv.put(KEY_CITY2_NAME, city2Name);
+                cv.put(KEY_DATE_FROM, from_date);
+                cv.put(KEY_DATE_TO, to_date);
+                cv.put(KEY_TIME_FROM, from_time);
+                cv.put(KEY_TIME_TO, to_time);
+                cv.put(KEY_INFO_FROM, from_info);
+                cv.put(KEY_INFO_TO, to_info);
+                cv.put(KEY_INFO, info);
+                cv.put(KEY_BUS_ID, bus_id);
+                cv.put(KEY_PRICE, price);
+                cv.put(KEY_RESERVATION_COUNT, reservation_count);
+
+                mDb.writeIntoDb(cv);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "JSON error has occured while parsing the data");
         }
-        delegate.processFinish(tripsList);
+        delegate.processFinish(response);
+        dialog.cancel();
     }
 
     private void closeStream(Closeable s){
@@ -134,7 +169,7 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
                 s.close();
             }
         } catch(IOException e){
-            Log.d("BufferedReader error", "Error occured while reading");
+            Log.e(TAG, "Error occured while reading");
         }
     }
 }
