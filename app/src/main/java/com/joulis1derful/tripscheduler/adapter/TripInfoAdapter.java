@@ -1,6 +1,7 @@
 package com.joulis1derful.tripscheduler.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,8 @@ public class TripInfoAdapter extends RecyclerView.Adapter<TripInfoAdapter.TripIn
         TextView time_from;
         TextView time_to;
         TextView price;
-        TextView date;
+        TextView date_from;
+        TextView date_to;
         TripInfoViewHolder(View itemView) {
             super(itemView);
             city1 = (TextView) itemView.findViewById(R.id.city1);
@@ -53,7 +55,9 @@ public class TripInfoAdapter extends RecyclerView.Adapter<TripInfoAdapter.TripIn
             time_from = (TextView) itemView.findViewById(R.id.time_from);
             time_to = (TextView) itemView.findViewById(R.id.time_to);
             price = (TextView) itemView.findViewById(R.id.price);
-            date = (TextView) itemView.findViewById(R.id.date);
+            date_from = (TextView) itemView.findViewById(R.id.date_from);
+            date_to = (TextView) itemView.findViewById(R.id.date_to);
+            applyFonts(itemView);
         }
 
         void bind(TripInfo tripInfo) {
@@ -61,8 +65,23 @@ public class TripInfoAdapter extends RecyclerView.Adapter<TripInfoAdapter.TripIn
             city2.setText(tripInfo.getCity_to().getName());
             time_from.setText(tripInfo.getTime_from());
             time_to.setText(tripInfo.getTime_to());
-            price.setText(String.valueOf(tripInfo.getPrice()));
-            date.setText(tripInfo.getDate_from());
+            price.setText(String.valueOf(tripInfo.getPrice()) + " \u20B4");
+            date_from.setText(tripInfo.getDate_from());
+            date_to.setText(tripInfo.getDate_to());
+        }
+
+        void applyFonts(View view) {
+            Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(),
+                    "fonts/EncodeSansExpanded-Regular.ttf");
+            Typeface priceFont = Typeface.createFromAsset(view.getContext().getAssets(),
+                    "fonts/Montserrat-Regular.ttf");
+            city1.setTypeface(typeface);
+            city2.setTypeface(typeface);
+            time_from.setTypeface(typeface);
+            time_to.setTypeface(typeface);
+            date_from.setTypeface(typeface);
+            date_to.setTypeface(typeface);
+            price.setTypeface(priceFont);
         }
     }
 }
