@@ -10,10 +10,10 @@ Android application that consists of 2 screens - list of parsed routes and detai
 <tbody>
 <tr>
 <td align="center">
-<img src="https://s26.postimg.org/j7yi34xud/photo_2017-09-24_16-52-53.jpg">
+<img src="https://github.com/joulis1derful/Trip_scheduler/blob/master/screenshots/photo_2017-09-24_16-52-53.jpg">
 </td>
 <td align="center">
-<img src="https://s26.postimg.org/itx63jdqt/photo_2017-09-24_16-52-48.jpg">
+<img src="https://github.com/joulis1derful/Trip_scheduler/blob/master/screenshots/photo_2017-09-24_16-52-48.jpg">
 </td>
 </tr>
 </tbody>
