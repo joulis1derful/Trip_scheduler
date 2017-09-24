@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,8 @@ import static com.joulis1derful.tripscheduler.util.DbContract.KEY_TIME_TO;
 public class MainActivity extends AppCompatActivity {
     public static final int POSITION_OFFSET_FOR_DB = 501;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private TextView emptyList;
     private RecyclerView mRecycler;
     private Button retryButton;
@@ -59,18 +63,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideTitleBar();
         setContentView(R.layout.activity_main);
         mDb = DbHelper.getDbInstance(this);
         initUI();
-      //  mDb.onUpgrade(mDb.getDb(), 2, 3);
         showFromDb();
     }
 
-    private void refreshUI() {
-        mAdapter = new TripInfoAdapter(this, tripsList);
-        mRecycler.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-    }
 
     private void initUI() {
         emptyList = (TextView) findViewById(R.id.list_is_empty);
@@ -123,7 +122,19 @@ public class MainActivity extends AppCompatActivity {
                 showFromDb();
             }
         });
+    }
 
+    private void hideTitleBar() {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(Window.FEATURE_NO_TITLE, Window.FEATURE_NO_TITLE);
+    }
+
+    private void refreshUI() {
+        mAdapter = new TripInfoAdapter(this, tripsList);
+        mRecycler.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void showEmptyList() {
@@ -202,9 +213,9 @@ public class MainActivity extends AppCompatActivity {
             int exitValue = ipProcess.waitFor();
             return (exitValue == 0);
         } catch (IOException e) {
-            Log.e("M isOnline", "Input/output error has occured");
+            Log.e(TAG, "Input/output error has occured");
         } catch (InterruptedException e) {
-            Log.e("M isOnline", "Thread error has occured");
+            Log.e(TAG, "Thread error has occured");
         }
 
         return false;
