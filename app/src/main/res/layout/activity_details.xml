@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.joulis1derful.tripscheduler.activity.DetailsActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="192dp" />
+
+    <View
+        android:id="@+id/title_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_line"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/city1_name_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Киев"
+        android:textColor="@color/red"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.508" />
+
+    <TextView
+        android:id="@+id/city1_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id: 100"
+        android:textColor="@color/white"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/city1_name_details"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/city1_name_details"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trending_flat_white_24dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/title_background"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/title_background"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/separating_line_details_top" />
+
+   <TextView
+       android:id="@+id/city2_id"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textColor="@color/white"
+       android:text="id: 101"
+       android:layout_marginLeft="0dp"
+       app:layout_constraintLeft_toLeftOf="@+id/city2_name_details"
+       app:layout_constraintTop_toTopOf="parent"
+       android:layout_marginTop="4dp"
+       android:layout_marginBottom="0dp"
+       app:layout_constraintBottom_toTopOf="@+id/city2_name_details"
+       app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/city2_name_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="22sp"
+        android:text="Чернигов"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_line"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintVertical_bias="0.504"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/vertical_line" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/horizontal_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <View
+        android:id="@+id/separating_line_details_top"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#999"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_line"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/cities_info_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Полный маршрут: Антрацит - Артёмовск - Изюм - Харьков - Полтава - Киев"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/bus_id_details" />
+
+    <TextView
+        android:id="@+id/date_from_placeholder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/cities_info_details"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/date_from_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2017-09-24"
+        android:textColor="@color/black"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.533"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/date_from_placeholder" />
+
+    <TextView
+        android:id="@+id/date_to_placeholder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/cities_info_details"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/date_to_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2017-09-24"
+        android:textColor="@color/black"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/date_to_placeholder" />
+
+    <TextView
+        android:id="@+id/time_from_placeholder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/date_from_details"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/time_from_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="04:00:00"
+        android:textColor="@color/black"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.495"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/time_from_placeholder" />
+
+    <TextView
+        android:id="@+id/time_to_placeholder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:gravity="center"
+        app:layout_constraintLeft_toRightOf="@+id/time_from_placeholder"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/date_to_details"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/time_to_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20:00:00"
+        android:textColor="@color/black"
+        android:layout_marginRight="8dp"
+        android:gravity="right"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/vertical_line"
+        app:layout_constraintHorizontal_bias="0.512"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/time_to_placeholder" />
+
+    <TextView
+        android:id="@+id/additional_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="Дополнительная информация"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="9dp"
+        app:layout_constraintTop_toBottomOf="@+id/time_from_details"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/info_from_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginLeft="8dp"
+        android:text="по требованию"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_line"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/additional_info"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/price_details" />
+
+    <TextView
+        android:id="@+id/info_to_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="0dp"
+        android:gravity="center"
+        android:text="станция метро Оскорки, возле въезда на стоянку"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/vertical_line"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/additional_info"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/price_details" />
+
+    <TextView
+        android:id="@+id/price_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Цена билета: 850 грн"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/reservation_count_details"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/bus_id_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Автобус №351"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_line"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.504" />
+
+    <TextView
+        android:id="@+id/reservation_count_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Зарезервировано: 0"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/price_details"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.502" />
+
+</android.support.constraint.ConstraintLayout>
