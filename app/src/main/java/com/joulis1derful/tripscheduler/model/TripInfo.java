@@ -1,6 +1,9 @@
 package com.joulis1derful.tripscheduler.model;
 
-public class TripInfo {
+import java.io.Serializable;
+
+public class TripInfo implements Serializable {
+    private int tripId;
     private City city_from;
     private City city_to;
     private String date_from;
@@ -14,7 +17,7 @@ public class TripInfo {
     private int bus_id;
     private int reservation_count;
 
-   public static class City {
+    public static class City implements Serializable {
         private int id;
         private int highlight;
         private String name;
@@ -38,9 +41,10 @@ public class TripInfo {
         }
     }
 
-    public TripInfo(City city_from, City city_to, String date_from, String date_to, String time_from,
+    public TripInfo(int tripId, City city_from, City city_to, String date_from, String date_to, String time_from,
                     String time_to, String info_from, String info_to, String info, int price,
                     int bus_id, int reservation_count) {
+        this.tripId = tripId;
         this.city_from = city_from;
         this.city_to = city_to;
         this.date_from = date_from;
@@ -53,6 +57,10 @@ public class TripInfo {
         this.price = price;
         this.bus_id = bus_id;
         this.reservation_count = reservation_count;
+    }
+
+    public int getTripId() {
+        return tripId;
     }
 
     public City getCity_from() {
