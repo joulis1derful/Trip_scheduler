@@ -72,7 +72,7 @@ public class TripInfoAdapter extends RecyclerView.Adapter<TripInfoAdapter.TripIn
 
         void applyFonts(View view) {
             Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(),
-                    "fonts/EncodeSansExpanded-Regular.ttf");
+                    "fonts/EncodeSansExpanded-Medium.ttf");
             Typeface priceFont = Typeface.createFromAsset(view.getContext().getAssets(),
                     "fonts/Montserrat-Regular.ttf");
             city1.setTypeface(typeface);

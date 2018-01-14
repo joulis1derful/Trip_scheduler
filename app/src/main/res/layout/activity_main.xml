@@ -39,7 +39,6 @@
         android:text="@string/retry"
         android:visibility="gone"
         android:padding="10sp"
-        android:textColor="@color/yellow"
-        android:background="@drawable/round_corners" />
+        android:textColor="@color/yellow" />
 
 </LinearLayout>
