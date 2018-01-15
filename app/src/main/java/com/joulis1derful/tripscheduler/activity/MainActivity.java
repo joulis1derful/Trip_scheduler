@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private DbHelper mDb;
     private Cursor mCursor;
 
+    private ParseTripInfo pt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,21 @@ public class MainActivity extends AppCompatActivity {
         showFromDb();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(pt != null) {
+            pt.cancel(true);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(pt != null) {
+            pt.cancel(true);
+        }
+    }
 
     private void initUI() {
         emptyList = (TextView) findViewById(R.id.list_is_empty);
@@ -188,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     private void parseData() {
         if (isOnline()) {
             showRetryButton(false);
-           ParseTripInfo pt = new ParseTripInfo(this, new ParseTripInfo.ParseResponse() {
+            pt = new ParseTripInfo(this, new ParseTripInfo.ParseResponse() {
                @Override
                public void processFinish(boolean response) {
                    if(!response) {

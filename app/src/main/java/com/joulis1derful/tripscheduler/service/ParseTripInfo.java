@@ -70,11 +70,11 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
         dialog.setMessage("Please wait...\nDownloading resources");
         dialog.setIndeterminate(true);
         dialog.show();
-        Log.d(TAG, "JSON DATA IS DOWNLOADING");
     }
 
     @Override
     protected String doInBackground(Void... params) {
+        Log.d(TAG, "JSON DATA IS DOWNLOADING");
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(URL_TO_PARSE);
@@ -83,11 +83,15 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
             urlConnection.setRequestMethod(HTTP_METHOD);
             urlConnection.connect();
 
+            if(isCancelled()) {
+                return null;
+            }
+
             InputStream is = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
             reader = new BufferedReader(new InputStreamReader(is));
             String line;
-            while((line = reader.readLine()) != null) {
+            while((line = reader.readLine()) != null && !Thread.interrupted()) {
                 buffer.append(line);
             }
 
@@ -103,62 +107,68 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String strJson) {
         super.onPostExecute(strJson);
+        Log.e(TAG, "GOT JSON");
         boolean response = false;
         JSONObject dataJson = null;
-        try {
-            dataJson = new JSONObject(strJson);
-            JSONArray trips = dataJson.getJSONArray("data");
+        if(strJson != null) {
+            try {
+                dataJson = new JSONObject(strJson);
+                JSONArray trips = dataJson.getJSONArray("data");
 
-            for(int i = 0; i < trips.length(); i++) {
-                JSONObject trip = trips.getJSONObject(i);
-                if(trip != null)
-                    response = true;
-                JSONObject from_city = trip.getJSONObject("from_city");
-                JSONObject to_city = trip.getJSONObject("to_city");
-                int tripId = trip.getInt("id");
-                int city1Highlight = from_city.getInt("highlight");
-                int city1Id = from_city.getInt("id");
-                String city1Name = from_city.getString("name");
-                int city2Highlight = to_city.getInt("highlight");
-                int city2Id = to_city.getInt("id");
-                String city2Name = to_city.getString("name");
-                String from_date = trip.getString("from_date");
-                String to_date = trip.getString("to_date");
-                String from_time = trip.getString("from_time");
-                String to_time = trip.getString("to_time");
-                String from_info = trip.getString("from_info");
-                String to_info  = trip.getString("to_info");
-                String info = trip.getString("info");
-                int price = trip.getInt("price");
-                int bus_id = trip.getInt("bus_id");
-                int reservation_count = trip.getInt("reservation_count");
+                for (int i = 0; i < trips.length(); i++) {
+                    JSONObject trip = trips.getJSONObject(i);
+                    if (trip != null)
+                        response = true;
+                    JSONObject from_city = trip.getJSONObject("from_city");
+                    JSONObject to_city = trip.getJSONObject("to_city");
+                    int tripId = trip.getInt("id");
+                    int city1Highlight = from_city.getInt("highlight");
+                    int city1Id = from_city.getInt("id");
+                    String city1Name = from_city.getString("name");
+                    int city2Highlight = to_city.getInt("highlight");
+                    int city2Id = to_city.getInt("id");
+                    String city2Name = to_city.getString("name");
+                    String from_date = trip.getString("from_date");
+                    String to_date = trip.getString("to_date");
+                    String from_time = trip.getString("from_time");
+                    String to_time = trip.getString("to_time");
+                    String from_info = trip.getString("from_info");
+                    String to_info = trip.getString("to_info");
+                    String info = trip.getString("info");
+                    int price = trip.getInt("price");
+                    int bus_id = trip.getInt("bus_id");
+                    int reservation_count = trip.getInt("reservation_count");
 
-                ContentValues cv = new ContentValues();
-                cv.put(KEY_ID, tripId);
-                cv.put(KEY_CITY1_ID, city1Id);
-                cv.put(KEY_CITY1_HIGHLIGHT, city1Highlight);
-                cv.put(KEY_CITY1_NAME, city1Name);
-                cv.put(KEY_CITY2_ID, city2Id);
-                cv.put(KEY_CITY2_HIGHLIGHT, city2Highlight);
-                cv.put(KEY_CITY2_NAME, city2Name);
-                cv.put(KEY_DATE_FROM, from_date);
-                cv.put(KEY_DATE_TO, to_date);
-                cv.put(KEY_TIME_FROM, from_time);
-                cv.put(KEY_TIME_TO, to_time);
-                cv.put(KEY_INFO_FROM, from_info);
-                cv.put(KEY_INFO_TO, to_info);
-                cv.put(KEY_INFO, info);
-                cv.put(KEY_BUS_ID, bus_id);
-                cv.put(KEY_PRICE, price);
-                cv.put(KEY_RESERVATION_COUNT, reservation_count);
+                    ContentValues cv = new ContentValues();
+                    cv.put(KEY_ID, tripId);
+                    cv.put(KEY_CITY1_ID, city1Id);
+                    cv.put(KEY_CITY1_HIGHLIGHT, city1Highlight);
+                    cv.put(KEY_CITY1_NAME, city1Name);
+                    cv.put(KEY_CITY2_ID, city2Id);
+                    cv.put(KEY_CITY2_HIGHLIGHT, city2Highlight);
+                    cv.put(KEY_CITY2_NAME, city2Name);
+                    cv.put(KEY_DATE_FROM, from_date);
+                    cv.put(KEY_DATE_TO, to_date);
+                    cv.put(KEY_TIME_FROM, from_time);
+                    cv.put(KEY_TIME_TO, to_time);
+                    cv.put(KEY_INFO_FROM, from_info);
+                    cv.put(KEY_INFO_TO, to_info);
+                    cv.put(KEY_INFO, info);
+                    cv.put(KEY_BUS_ID, bus_id);
+                    cv.put(KEY_PRICE, price);
+                    cv.put(KEY_RESERVATION_COUNT, reservation_count);
 
-                mDb.writeIntoDb(cv);
+                    mDb.writeIntoDb(cv);
+                }
+
+            } catch (JSONException e) {
+                Log.e(TAG, "JSON error has occured while parsing the data");
+            } finally {
+                delegate.processFinish(response);
+                dialog.cancel();
             }
-        } catch (JSONException e) {
-            Log.e(TAG, "JSON error has occured while parsing the data");
         }
-        delegate.processFinish(response);
-        dialog.cancel();
+
     }
 
     private void closeStream(Closeable s){
