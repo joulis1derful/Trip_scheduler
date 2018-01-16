@@ -205,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void parseData() {
         if (isOnline()) {
+            String url = getResources().getString(R.string.url_to_parse);
             showRetryButton(false);
             pt = new ParseTripInfo(this, new ParseTripInfo.ParseResponse() {
                @Override
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                    }
                }
            });
-            pt.execute();
+            pt.execute(url);
         } else {
             retry();
         }

@@ -39,9 +39,7 @@ import static com.joulis1derful.tripscheduler.util.DbContract.KEY_TIME_FROM;
 import static com.joulis1derful.tripscheduler.util.DbContract.KEY_TIME_TO;
 
 
-public class ParseTripInfo extends AsyncTask<Void, Void, String> {
-    public static final String URL_TO_PARSE =
-            "http://projects.gmoby.org/web/index.php/api/trips?from_date=2016-01-01&to_date=2018-03-01";
+public class ParseTripInfo extends AsyncTask<String, Void, String> {
     public static final String HTTP_METHOD = "GET";
 
     private static final String TAG = ParseTripInfo.class.getSimpleName();
@@ -73,11 +71,11 @@ public class ParseTripInfo extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected String doInBackground(String... params) {
         Log.d(TAG, "JSON DATA IS DOWNLOADING");
         HttpURLConnection urlConnection = null;
         try {
-            URL url = new URL(URL_TO_PARSE);
+            URL url = new URL(params[0]);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(HTTP_METHOD);

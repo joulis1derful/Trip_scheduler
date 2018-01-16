@@ -3,4 +3,6 @@
     <string name="list_is_empty">Список маршрутов пуст</string>
     <string name="retry">Повторить</string>
     <string name="title_bar">#20a780</string>
+    <string name="url_to_parse"><![CDATA[http://projects.gmoby.org/web/index.php/api/trips?from_date=2016-01-01&to_date=2018-03-01]]></string>
+
 </resources>
