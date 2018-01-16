@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.os.AsyncTask.Status.RUNNING;
 import static com.joulis1derful.tripscheduler.util.DbContract.KEY_BUS_ID;
 import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY1_HIGHLIGHT;
 import static com.joulis1derful.tripscheduler.util.DbContract.KEY_CITY1_ID;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(pt != null) {
+        if(pt != null && pt.getStatus() == RUNNING) {
             pt.cancel(true);
         }
     }
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(pt != null) {
+        if(pt != null && pt.getStatus() == RUNNING) {
             pt.cancel(true);
         }
     }
